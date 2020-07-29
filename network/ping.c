@@ -13,6 +13,7 @@
 #include "arpa/inet.h"
 #include "signal.h"
 #include "sys/time.h"
+#include <stdint.h>
 
 extern int errno;
 
@@ -25,15 +26,25 @@ int sendnum;
 int recvnum;
 int datalen = 30;
 
-unsigned short my_cksum(unsigned short *data, int len)
+static uint16_t my_cksum(uint16_t *data, int len)
 {
-    int result = 0;
+    uint32_t result = 0;
+#if 0
     for(int i=0; i<len/2; i++) {
         result += *data;
         data++;
     }
+#endif
+    while (len>1) {
+        result += *data;
+        data++;
+        len -= 2;
+    }
+    if(len == 1){
+        result += *data;
+    }
     while(result >> 16) result = (result&0xffff) + (result>>16);
-    return ~result;
+    return (uint16_t)(~result);
 }
 
 void tv_sub(struct timeval* recvtime, const struct timeval* sendtime)
