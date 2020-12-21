@@ -4,7 +4,7 @@ endif
 
 TARGETS := a.out
 
-CFLAGS = $(CFLAG)
+CFLAGS = $(CFLAG) -DVAR=\"12345\"
 
 #LD_LIBRARY_PATH=/usr/local/lib
 #LDFLAGS = -L${LD_LIBRARY_PATH} -Wl,-rpath=${LD_LIBRARY_PATH}
